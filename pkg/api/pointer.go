@@ -9,3 +9,8 @@ func Bool(v bool) *bool {
 func String(v string) *string {
 	return &v
 }
+
+// Int returns a pointer for an int value
+func Int(v int) *int {
+	return &v
+}

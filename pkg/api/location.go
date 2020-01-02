@@ -79,8 +79,7 @@ func (s *LocationService) List(params LocationParameters) ([]Location, error) {
 		QueryStruct(params).
 		Receive(locations, nil)
 
-	if resp.StatusCode != http.StatusOK {
-		fmt.Printf(resp.Request.URL.RequestURI())
+	if err != nil && resp.StatusCode != http.StatusOK {
 		return *locations, fmt.Errorf("unexpected status: %s", resp.Status)
 	}
 
