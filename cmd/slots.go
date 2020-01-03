@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"time"
 
 	ttapi "github.com/bendrucker/trusted-traveler-cli/pkg/api"
 	"github.com/spf13/cobra"
@@ -23,7 +24,7 @@ var slotsCmd = &cobra.Command{
 			params.LocationID = ttapi.Int(viper.GetInt("location-id"))
 		}
 
-		slots, err := client.Slots.List(params)
+		slots, err := getSlots(params)
 		if err != nil {
 			return err
 		}
@@ -39,6 +40,20 @@ var slotsCmd = &cobra.Command{
 	},
 }
 
+func getSlots(params ttapi.SlotParameters) ([]ttapi.Slot, error) {
+	slots, err := client.Slots.List(params)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(slots) == 0 && viper.GetBool("wait") {
+		time.Sleep(time.Duration(viper.GetInt("retry-delay")) * time.Second)
+		return getSlots(params)
+	}
+
+	return slots, err
+}
+
 func init() {
 	rootCmd.AddCommand(slotsCmd)
 
@@ -48,6 +63,9 @@ func init() {
 	f.Int("limit", 10, "The maximum number of slots to return")
 	f.Int("minimum", 1, "")
 	f.Int("location-id", 0, "Lists appointment slots for the specified location")
+
+	f.Bool("wait", false, "If no slots are returned, retry until slots are returned")
+	f.Int("retry-delay", 5, "Number of seconds between retries when --wait is set")
 
 	viper.BindPFlags(f)
 }
