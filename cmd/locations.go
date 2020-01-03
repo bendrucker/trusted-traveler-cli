@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"strconv"
 	"strings"
 
@@ -58,6 +59,10 @@ var locationsCmd = &cobra.Command{
 			}
 
 			table.Render()
+		case "json":
+			e := json.NewEncoder(cmd.OutOrStdout())
+			e.SetIndent("", "  ")
+			return e.Encode(locations)
 		}
 
 		return nil
