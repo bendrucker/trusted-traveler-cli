@@ -10,7 +10,7 @@ func NewClient(options Options) *Client {
 
 	return &Client{
 		Locations: newLocationService(client.New().Path("locations/")),
-		Slots:     newSlotService(client.New().Path("slots/")),
+		Slots:     newSlotService(client.New().Path("slots")),
 	}
 }
 
