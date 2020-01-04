@@ -1,10 +1,12 @@
 package ttapi
 
-import "github.com/dghubble/sling"
+import (
+	"fmt"
+	"net/http"
+	"time"
 
-import "fmt"
-
-import "net/http"
+	"github.com/dghubble/sling"
+)
 
 // LocationService can list locations from the schedule API
 type LocationService struct {
@@ -48,6 +50,11 @@ type Location struct {
 	LastUpdatedDate     string    `json:"lastUpdatedDate"`
 	CreatedDate         string    `json:"createdDate"`
 	Services            []Service `json:"services"`
+}
+
+// Zone returns a time.Location describing the time zone for the Trusted Traveler location
+func (l *Location) Zone() (*time.Location, error) {
+	return time.LoadLocation(l.TzData)
 }
 
 // Service is a Trusted Traveler service offered at a Location

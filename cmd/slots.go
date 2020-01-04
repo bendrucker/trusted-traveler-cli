@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"encoding/json"
+	"strconv"
 	"time"
 
 	ttapi "github.com/bendrucker/trusted-traveler-cli/pkg/api"
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -30,6 +32,49 @@ var slotsCmd = &cobra.Command{
 		}
 
 		switch viper.GetString("output") {
+		case "table":
+			table := tablewriter.NewWriter(cmd.OutOrStdout())
+			table.SetAlignment(tablewriter.ALIGN_LEFT)
+			table.SetAutoMergeCells(true)
+
+			table.SetHeader([]string{
+				"Location",
+				"Date",
+				"Start Time",
+			})
+
+			locations, err := client.Locations.List(ttapi.LocationParameters{})
+			if err != nil {
+				return err
+			}
+
+			for _, slot := range slots {
+				var location ttapi.Location
+				for _, l := range locations {
+					if l.ID == slot.LocationID {
+						location = l
+					}
+				}
+
+				zone, err := location.Zone()
+				if err != nil {
+					return err
+				}
+
+				st, err := time.ParseInLocation("2006-01-02T15:04", slot.StartTimestamp, zone)
+				if err != nil {
+					return err
+				}
+
+				table.Append([]string{
+					strconv.Itoa(slot.LocationID),
+					st.Format("1/2/2006"),
+					st.Format("3:04 PM"),
+				})
+			}
+
+			table.Render()
+
 		case "json":
 			e := json.NewEncoder(cmd.OutOrStdout())
 			e.SetIndent("", "  ")
