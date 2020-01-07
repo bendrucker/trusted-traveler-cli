@@ -23,7 +23,7 @@ var slotsCmd = &cobra.Command{
 		}
 
 		if viper.IsSet("location-id") {
-			params.LocationID = ttapi.Int(viper.GetInt("location-id"))
+			params.LocationID = ttapi.String(viper.GetString("location-id"))
 		}
 
 		slots, err := getSlots(params)

@@ -15,15 +15,15 @@ type LocationService struct {
 
 // Location is a place where Trusted Traveler services are offered
 type Location struct {
-	ID                  int       `json:"id"`
-	Name                string    `json:"name"`
+	ID                  int       `json:"id" header:"ID,text"`
+	Name                string    `json:"name" header:"Name"`
 	ShortName           string    `json:"shortName"`
 	LocationType        string    `json:"locationType"`
 	LocationCode        string    `json:"locationCode"`
 	Address             string    `json:"address"`
 	AddressAdditional   string    `json:"addressAdditional"`
-	City                string    `json:"city"`
-	State               string    `json:"state"`
+	City                string    `json:"city" header:"City"`
+	State               string    `json:"state" header:"State"`
 	PostalCode          string    `json:"postalCode"`
 	CountryCode         string    `json:"countryCode"`
 	TzData              string    `json:"tzData"`
@@ -49,7 +49,7 @@ type Location struct {
 	LastUpdatedBy       string    `json:"lastUpdatedBy"`
 	LastUpdatedDate     string    `json:"lastUpdatedDate"`
 	CreatedDate         string    `json:"createdDate"`
-	Services            []Service `json:"services"`
+	Services            []Service `json:"services" header:"Services,text"`
 }
 
 // Zone returns a time.Location describing the time zone for the Trusted Traveler location
@@ -61,6 +61,10 @@ func (l *Location) Zone() (*time.Location, error) {
 type Service struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
+}
+
+func (s Service) String() string {
+	return s.Name
 }
 
 func newLocationService(client *sling.Sling) *LocationService {

@@ -2,11 +2,9 @@ package cmd
 
 import (
 	"encoding/json"
-	"strconv"
-	"strings"
 
 	ttapi "github.com/bendrucker/trusted-traveler-cli/pkg/api"
-	"github.com/olekukonko/tablewriter"
+	"github.com/landoop/tableprinter"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -32,33 +30,8 @@ var locationsCmd = &cobra.Command{
 
 		switch viper.GetString("output") {
 		case "table":
-			table := tablewriter.NewWriter(cmd.OutOrStdout())
-			table.SetAlignment(tablewriter.ALIGN_LEFT)
-
-			table.SetHeader([]string{
-				"ID",
-				"Name",
-				"City",
-				"State",
-				"Services",
-			})
-
-			for _, location := range locations {
-				services := make([]string, len(location.Services))
-				for i, s := range location.Services {
-					services[i] = s.Name
-				}
-
-				table.Append([]string{
-					strconv.Itoa(location.ID),
-					location.Name,
-					location.City,
-					location.State,
-					strings.Join(services, ", "),
-				})
-			}
-
-			table.Render()
+			table := tableprinter.New(cmd.OutOrStdout())
+			table.Print(locations)
 		case "json":
 			e := json.NewEncoder(cmd.OutOrStdout())
 			e.SetIndent("", "  ")

@@ -40,7 +40,7 @@ func TestSlotListWithParams(t *testing.T) {
 	})
 
 	locations, err := client.Slots.List(SlotParameters{
-		LocationID: Int(123),
+		LocationID: String("123"),
 	})
 
 	if !assert.NoError(t, err) {

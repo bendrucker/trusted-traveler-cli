@@ -1,10 +1,11 @@
 package ttapi
 
-import "github.com/dghubble/sling"
+import (
+	"fmt"
+	"net/http"
 
-import "fmt"
-
-import "net/http"
+	"github.com/dghubble/sling"
+)
 
 // SlotService can list appointment slots from the schedule API
 type SlotService struct {
@@ -13,7 +14,7 @@ type SlotService struct {
 
 // Slot is an available interview appointment
 type Slot struct {
-	LocationID     int    `json:"locationId"`
+	LocationID     int     `json:"locationId"`
 	StartTimestamp string `json:"startTimestamp"`
 	EndTimestamp   string `json:"endTimestamp"`
 	Active         bool   `json:"active"`
@@ -30,7 +31,7 @@ func newSlotService(client *sling.Sling) *SlotService {
 type SlotParameters struct {
 	OrderBy    *string `url:"orderBy,omitempty"`
 	Limit      *int    `url:"limit,omitempty"`
-	LocationID *int    `url:"locationId,omitempty"`
+	LocationID *string `url:"locationId,omitempty"`
 	Minimum    *int    `url:"minimum,omitempty"`
 }
 
