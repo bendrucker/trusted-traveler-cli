@@ -15,15 +15,6 @@ const baseURL = "https://ttp.cbp.dhs.gov/schedulerapi/"
 var rootCmd = &cobra.Command{
 	Use:   "trusted-traveler",
 	Short: "Interact with the Trusted Traveler Program API",
-	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		switch o := viper.GetString("output"); o {
-		case "table", "json":
-		default:
-			return fmt.Errorf("invalid output format: %s", o)
-		}
-
-		return nil
-	},
 }
 
 var client = ttapi.NewClient(ttapi.Options{

@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"encoding/json"
-
 	ttapi "github.com/bendrucker/trusted-traveler-cli/pkg/api"
-	"github.com/landoop/tableprinter"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -28,17 +25,7 @@ var locationsCmd = &cobra.Command{
 			return err
 		}
 
-		switch viper.GetString("output") {
-		case "table":
-			table := tableprinter.New(cmd.OutOrStdout())
-			table.Print(locations)
-		case "json":
-			e := json.NewEncoder(cmd.OutOrStdout())
-			e.SetIndent("", "  ")
-			return e.Encode(locations)
-		}
-
-		return nil
+		return printOutput(cmd, locations)
 	},
 }
 
