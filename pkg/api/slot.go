@@ -14,11 +14,11 @@ type SlotService struct {
 
 // Slot is an available interview appointment
 type Slot struct {
-	LocationID     int     `json:"locationId"`
-	StartTimestamp string `json:"startTimestamp"`
-	EndTimestamp   string `json:"endTimestamp"`
-	Active         bool   `json:"active"`
-	Duration       int    `json:"duration"`
+	LocationID int    `json:"locationId" header:"Location,text"`
+	Start      string `json:"startTimestamp" header:"Start"`
+	End        string `json:"endTimestamp" header:"End"`
+	Active     bool   `json:"active"`
+	Duration   int    `json:"duration" header:"Duration"`
 }
 
 func newSlotService(client *sling.Sling) *SlotService {
