@@ -1,4 +1,4 @@
-# trusted-traveler-cli
+# trusted-traveler-cli ![](https://github.com/bendrucker/trusted-traveler-cli/workflows/Go/badge.svg?branch=master)
 
 > CLI for interacting with the [Trusted Traveler Program](https://ttp.dhs.gov) API
 
