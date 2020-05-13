@@ -10,7 +10,7 @@ require (
 	github.com/landoop/tableprinter v0.0.0-20200104100433-ae9249991eb1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/olekukonko/tablewriter v0.0.4
-	github.com/spf13/cobra v0.0.5
+	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.6.0
 	github.com/stretchr/testify v1.5.1
 )
